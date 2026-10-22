@@ -1,0 +1,14 @@
+name: طلب خدمة من إدارة الاتصال المؤسسي
+description: بلاغ طلب خدمة يُنشأ تلقائياً من المنصة
+title: "[طلب] "
+labels: ["service-request", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: "يُملأ هذا النموذج تلقائياً من المنصة. لا تعدّل الحقول يدوياً إلا عند الحاجة."
+  - type: textarea
+    id: details
+    attributes:
+      label: تفاصيل الطلب
+    validations:
+      required: true
