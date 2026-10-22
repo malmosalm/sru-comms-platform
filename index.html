@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة إدارة الاتصال المؤسسي - جامعة سليمان الراجحي</title>
+<style>
+  :root {
+    --purple: #4F2D83;
+    --cyan: #02ADD8;
+    --gray: #9EA9AD;
+    --bg: #F5F6F8;
+    --text: #1F1B2D;
+    --card: #FFFFFF;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "DIN Next LT Arabic", "Segoe UI", Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: var(--purple);
+    color: #fff;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header h1 { font-size: 20px; margin: 0; }
+  header small { opacity: .85; display: block; font-size: 13px; }
+  .btn {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 15px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary { background: var(--cyan); color: #fff; }
+  .btn-light { background: #fff; color: var(--purple); }
+  .btn:hover { opacity: .9; }
+  main { max-width: 1080px; margin: 0 auto; padding: 24px; }
+  nav.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  nav.tabs button {
+    background: #fff;
+    border: 1px solid #dfe3e6;
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+  }
+  nav.tabs button.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+  section.view { display: none; }
+  section.view.active { display: block; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    border-top: 4px solid var(--cyan);
+  }
+  .card h3 { margin: 0 0 8px; font-size: 17px; color: var(--purple); }
+  .card p { margin: 0; font-size: 14px; line-height: 1.7; color: #4a4558; }
+  .card .tag { display: inline-block; font-size: 12px; color: var(--gray); margin-top: 10px; }
+  .service-card { cursor: pointer; transition: transform .1s; }
+  .service-card:hover { transform: translateY(-2px); }
+  form.request {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: grid;
+    gap: 14px;
+    max-width: 680px;
+  }
+  form.request label { font-size: 14px; font-weight: bold; display: grid; gap: 6px; }
+  form.request input, form.request select, form.request textarea {
+    font-family: inherit;
+    font-size: 15px;
+    padding: 10px 12px;
+    border: 1px solid #cfd5da;
+    border-radius: 10px;
+  }
+  form.request textarea { min-height: 110px; resize: vertical; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+  .hint { font-size: 13px; color: #6b6878; }
+  .notice { background: #E6F7FB; border-right: 4px solid var(--cyan); padding: 12px 16px; border-radius: 10px; font-size: 14px; }
+  .news-item { border-bottom: 1px solid #eceef0; padding: 14px 0; }
+  .news-item:last-child { border-bottom: 0; }
+  .news-item h4 { margin: 0 0 6px; color: var(--purple); }
+  .news-item span { font-size: 12px; color: var(--gray); }
+  footer { text-align: center; color: var(--gray); font-size: 13px; padding: 30px 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>منصة إدارة الاتصال المؤسسي</h1>
+    <small>جامعة سليمان الراجحي</small>
+  </div>
+  <div id="authArea">
+    <button class="btn btn-light" id="loginBtn">تسجيل الدخول</button>
+  </div>
+</header>
+
+<main>
+  <nav class="tabs" id="tabs">
+    <button data-view="services" class="active">الخدمات</button>
+    <button data-view="request">طلب جديد</button>
+    <button data-view="news">آخر المستجدات</button>
+    <button data-view="about">عن المنصة</button>
+  </nav>
+
+  <!-- الخدمات -->
+  <section class="view active" id="view-services">
+    <div class="grid" id="serviceGrid"></div>
+  </section>
+
+  <!-- طلب جديد -->
+  <section class="view" id="view-request">
+    <div class="notice" style="margin-bottom:16px">
+      يتم إرسال الطلب كبلاغ آلي إلى مستودع المنصة على GitHub، ويتابع فريق الاتصال المؤسسي الطلب من هناك.
+    </div>
+    <form class="request" id="requestForm">
+      <label>نوع الطلب
+        <select name="service" id="serviceSelect" required></select>
+      </label>
+      <div class="row">
+        <label>اسم مقدم الطلب
+          <input name="requester" required>
+        </label>
+        <label>الإدارة / الكلية
+          <input name="department" required>
+        </label>
+      </div>
+      <div class="row">
+        <label>البريد الجامعي
+          <input type="email" name="email" required>
+        </label>
+        <label>رقم الجوال
+          <input type="tel" name="phone">
+        </label>
+      </div>
+      <div class="row">
+        <label>تاريخ الحاجة
+          <input type="date" name="needed_date" required>
+        </label>
+        <label>الموقع / القاعة (إن وجد)
+          <input name="location">
+        </label>
+      </div>
+      <label>عنوان الفعالية أو الموضوع
+        <input name="title" required>
+      </label>
+      <label>تفاصيل الطلب
+        <textarea name="details" required placeholder="اذكر الهدف، والجمهور المستهدف، والمخرجات المطلوبة"></textarea>
+      </label>
+      <label>رابط المرفقات (Drive / OneDrive)
+        <input type="url" name="attachments" placeholder="https://">
+        <span class="hint">أي مواد مرجعية أو تفاصيل إضافية.</span>
+      </label>
+      <div>
+        <button type="submit" class="btn btn-primary">إرسال الطلب</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- الأخبار -->
+  <section class="view" id="view-news">
+    <div class="card" style="border-top-color:var(--purple)">
+      <div id="newsList"></div>
+    </div>
+  </section>
+
+  <!-- عن المنصة -->
+  <section class="view" id="view-about">
+    <div class="card">
+      <h3>عن المنصة</h3>
+      <p>منصة موحدة لطلبات خدمات إدارة الاتصال المؤسسي، ولمتابعة آخر مستجدات خدمة مجتمع الجامعة. يتم تسجيل كل طلب كبلاغ على GitHub ليكون قابلاً للتتبع والقياس.</p>
+    </div>
+  </section>
+</main>
+
+<footer>© إدارة الاتصال المؤسسي - جامعة سليمان الراجحي</footer>
+
+<script src="config.js"></script>
+<script>
+  const SERVICES = [
+    { id: "media-coverage", name: "طلب التغطية الإعلامية", desc: "تغطية إعلامية لفعالية أو نشاط أو زيارة." },
+    { id: "design", name: "طلب التصاميم", desc: "تصاميم مطبوعة ورقمية وهويّة بصرية." },
+    { id: "photography", name: "طلب التصوير", desc: "تصوير فوتوغرافي أو فيديو لفعاليات الجامعة." },
+    { id: "publishing", name: "طلب النشر", desc: "نشر محتوى على منصات الجامعة الرسمية." },
+    { id: "visit-arrangement", name: "طلب الترتيب للزيارات", desc: "ترتيب زيارات الوفود والضيوف." },
+    { id: "gifts", name: "طلب الهدايا", desc: "طلب هدايا تذكارية للضيوف والفعاليات." },
+    { id: "exhibitions", name: "طلب المعارض", desc: "المشاركة في المعارض والفعاليات الخارجية أو الداخلية." },
+    { id: "other", name: "أخرى", desc: "أي طلب لم يرد ضمن الخدمات السابقة." }
+  ];
+
+  const NEWS = [
+    { date: "2026-10-22", title: "مثال: إطلاق منصات الجامعة الرقمية", body: "تقوم إدارة التحول الرقمي ببناء خريطة موحدة لمنصات الجامعة. آخر موعد للتسجيل 25 أكتوبر 2026." }
+  ];
+
+  // Tabs
+  document.querySelectorAll("#tabs button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#tabs button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll("section.view").forEach(s => s.classList.remove("active"));
+      document.getElementById("view-" + btn.dataset.view).classList.add("active");
+    });
+  });
+
+  // Services grid
+  const grid = document.getElementById("serviceGrid");
+  SERVICES.forEach(s => {
+    const el = document.createElement("div");
+    el.className = "card service-card";
+    el.innerHTML = `<h3>${s.name}</h3><p>${s.desc}</p><span class="tag">اضغط لتقديم الطلب</span>`;
+    el.addEventListener("click", () => {
+      document.getElementById("serviceSelect").value = s.id;
+      document.querySelector('#tabs button[data-view="request"]').click();
+    });
+    grid.appendChild(el);
+  });
+
+  // Service select
+  const sel = document.getElementById("serviceSelect");
+  SERVICES.forEach(s => {
+    const o = document.createElement("option");
+    o.value = s.id; o.textContent = s.name;
+    sel.appendChild(o);
+  });
+
+  // News
+  const newsList = document.getElementById("newsList");
+  NEWS.forEach(n => {
+    const d = document.createElement("div");
+    d.className = "news-item";
+    d.innerHTML = `<h4>${n.title}</h4><p>${n.body}</p><span>${n.date}</span>`;
+    newsList.appendChild(d);
+  });
+
+  // Request -> GitHub issue (pre-filled, uses issue template)
+  document.getElementById("requestForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const svc = SERVICES.find(s => s.id === f.get("service"));
+    const title = `[${svc.name}] ${f.get("title")}`;
+    const body = [
+      `**نوع الطلب:** ${svc.name}`,
+      `**مقدم الطلب:** ${f.get("requester")}`,
+      `**الإدارة / الكلية:** ${f.get("department")}`,
+      `**البريد:** ${f.get("email")}`,
+      `**الجوال:** ${f.get("phone") || "-"}`,
+      `**تاريخ الحاجة:** ${f.get("needed_date")}`,
+      `**الموقع:** ${f.get("location") || "-"}`,
+      `**التفاصيل:**\n${f.get("details")}`,
+      `**المرفقات:** ${f.get("attachments") || "-"}`
+    ].join("\n\n");
+    const url = `https://github.com/${SRU_CONFIG.repo}/issues/new?template=service-request.yml` +
+                `&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    window.open(url, "_blank", "noopener");
+  });
+
+  // Unified login (SSO placeholder)
+  document.getElementById("loginBtn").addEventListener("click", () => {
+    if (SRU_CONFIG.ssoLoginUrl) {
+      window.location.href = SRU_CONFIG.ssoLoginUrl;
+    } else {
+      alert("ربط الدخول الموحد (SSO) يحتاج إلى بيانات مزود الهوية الجامعي. يتم ضبطه في config.js.");
+    }
+  });
+</script>
+</body>
+</html>
