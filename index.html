@@ -264,10 +264,11 @@
         <p data-t="أربع خطوات واضحة من الإرسال حتى الإنجاز." data-en="Four clear steps from submission to completion.">أربع خطوات واضحة من الإرسال حتى الإنجاز.</p>
       </div>
       <div class="steps">
-        <div class="step"><div class="step-num">1</div><h4 data-t="اختر الخدمة" data-en="Choose a service">اختر الخدمة</h4><p data-t="حدّد نوع الطلب من الكتالوج." data-en="Select the request type from the catalogue.">حدّد نوع الطلب من الكتالوج.</p></div>
-        <div class="step"><div class="step-num">2</div><h4 data-t="أرسل البيانات" data-en="Submit details">أرسل البيانات</h4><p data-t="املأ النموذج وأرفق المواد المرجعية." data-en="Fill in the form and attach reference materials.">املأ النموذج وأرفق المواد المرجعية.</p></div>
-        <div class="step"><div class="step-num">3</div><h4 data-t="المراجعة" data-en="Review">المراجعة</h4><p data-t="يراجع الفريق الطلب ويؤكد الجدول والمتطلبات." data-en="The team reviews the request and confirms the schedule and requirements.">يراجع الفريق الطلب ويؤكد الجدول والمتطلبات.</p></div>
-        <div class="step"><div class="step-num">4</div><h4 data-t="التنفيذ والإغلاق" data-en="Delivery & closure">التنفيذ والإغلاق</h4><p data-t="يُنفَّذ الطلب ويُبلَّغ مقدّمه بالإنجاز." data-en="The request is delivered and the requester is notified.">يُنفَّذ الطلب ويُبلَّغ مقدّمه بالإنجاز.</p></div>
+        <div class="step"><div class="step-num">1</div><h4 data-t="استلام الطلب" data-en="Intake">استلام الطلب</h4><p data-t="يُسجَّل الطلب تلقائياً برقم وحالة جديدة." data-en="The request is logged automatically with a number and status.">يُسجَّل الطلب تلقائياً برقم وحالة جديدة.</p></div>
+        <div class="step"><div class="step-num">2</div><h4 data-t="التصنيف والأولوية" data-en="Triage & priority">التصنيف والأولوية</h4><p data-t="تُحدَّد نوع الخدمة والأولوية (عادية أو عاجلة)." data-en="Service type and priority (normal or urgent) are set.">تُحدَّد نوع الخدمة والأولوية (عادية أو عاجلة).</p></div>
+        <div class="step"><div class="step-num">3</div><h4 data-t="التكليف" data-en="Assignment">التكليف</h4><p data-t="يُكلَّف عضو من الفريق بمتابعة الطلب." data-en="A team member is assigned to follow up.">يُكلَّف عضو من الفريق بمتابعة الطلب.</p></div>
+        <div class="step"><div class="step-num">4</div><h4 data-t="التنفيذ" data-en="Delivery">التنفيذ</h4><p data-t="ينفَّذ الطلب ويُراجَع قبل التسليم." data-en="The request is delivered and reviewed before handover.">ينفَّذ الطلب ويُراجَع قبل التسليم.</p></div>
+        <div class="step"><div class="step-num">5</div><h4 data-t="الإغلاق" data-en="Closure">الإغلاق</h4><p data-t="يُبلَّغ مقدّم الطلب بالإنجاز ويُغلق الطلب." data-en="The requester is notified and the request is closed.">يُبلَّغ مقدّم الطلب بالإنجاز ويُغلق الطلب.</p></div>
       </div>
     </div>
   </section>
@@ -306,6 +307,14 @@
             <div class="row">
               <label><span data-t="تاريخ الحاجة *" data-en="Date needed *">تاريخ الحاجة *</span><input type="date" name="needed_date" required></label>
               <label><span data-t="الموقع / القاعة" data-en="Location / Hall">الموقع / القاعة</span><input name="location"></label>
+            </div>
+            <div class="row">
+              <label><span data-t="الأولوية" data-en="Priority">الأولوية</span>
+                <select name="priority"><option value="عادية" data-t="عادية" data-en="Normal">عادية</option><option value="عاجلة" data-t="عاجلة" data-en="Urgent">عاجلة</option></select>
+              </label>
+              <label><span data-t="المكلّف بالمتابعة" data-en="Assigned to">المكلّف بالمتابعة</span>
+                <select name="assignee" id="assigneeSelect"></select>
+              </label>
             </div>
             <label><span data-t="تفاصيل الطلب *" data-en="Request details *">تفاصيل الطلب *</span>
               <textarea name="details" required data-ph-ar="اذكر الهدف، والجمهور المستهدف، والمخرجات المطلوبة" data-ph-en="State the goal, target audience and expected outputs"></textarea>
@@ -493,6 +502,18 @@
     "other": `<svg viewBox="0 0 96 96" fill="none" stroke="#501e8c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="18" y="18" width="26" height="26" rx="4" fill="#f0ebf8"/><rect x="52" y="18" width="26" height="26" rx="4"/><rect x="18" y="52" width="26" height="26" rx="4"/><path d="M65 55v20M55 65h20" stroke="#0a6eaa"/></svg>`
   };
 
+  const TEAM = [
+    { ar: "ماجد المقبل (المدير)", en: "Majid Al-Muqbel (Director)" },
+    { ar: "محمد عاطف عطية", en: "Mohammed Atef Atiea" },
+    { ar: "باسل عايد العيسى", en: "Basel Aaid Aleisa" },
+    { ar: "سطام صالح الحديف", en: "Sattam Saleh Alhudaif" },
+    { ar: "عبدالكريم الصقير", en: "Abdul Kaream Al Sugair" },
+    { ar: "سارة المطيري", en: "Sara Almutairi" },
+    { ar: "بيادر العنزي", en: "Bayader Alanzi" },
+    { ar: "أحمد الشاعر", en: "Ahmed AlShaer" },
+    { ar: "معاذ عبدالله المسلم", en: "Muaaz Abdullah Almosalm" }
+  ];
+
   let lang = "ar";
   const T = (el) => (lang === "en" ? el.dataset.en : el.dataset.t);
 
@@ -549,6 +570,19 @@
       news.appendChild(d);
     });
 
+    const as = document.getElementById("assigneeSelect");
+    const curA = as.value;
+    as.innerHTML = "";
+    const aph = document.createElement("option");
+    aph.value = ""; aph.textContent = isEn ? "Unassigned" : "غير محدد";
+    as.appendChild(aph);
+    TEAM.forEach(m => {
+      const o = document.createElement("option");
+      o.value = m.ar; o.textContent = isEn ? m.en : m.ar;
+      as.appendChild(o);
+    });
+    if (curA) as.value = curA;
+
     const ds = document.getElementById("deptSelect");
     const curD = ds.value;
     ds.innerHTML = "";
@@ -594,6 +628,8 @@
       `**الجوال:** ${f.get("phone") || "-"}`,
       `**تاريخ الحاجة:** ${f.get("needed_date")}`,
       `**الموقع:** ${f.get("location") || "-"}`,
+      `**الأولوية:** ${f.get("priority")}`,
+      `**المكلّف بالمتابعة:** ${f.get("assignee") || "غير محدد"}`,
       `**التفاصيل:**\n${f.get("details")}`,
       `**المرفقات:** ${f.get("attachments") || "-"}`
     ].join("\n\n");
