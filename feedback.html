@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تقييم الخدمة - إدارة الاتصال المؤسسي | Service Feedback</title>
+<meta name="description" content="Corporate Communication Administration - Sulaiman Al-Rajhi University. Service feedback form.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --p:#501e8c; --pd:#3a1464; --pl:#f0ebf8; --bl:#0a6eaa; --ink:#241331; --mut:#675b72; --line:#d9d2e4; --bg:#f7f5fb; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Cairo",system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.7; }
+  header { background:#fff; border-bottom:1px solid var(--line); }
+  .wrap { max-width:720px; margin:0 auto; padding:0 16px; }
+  .top { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 0; flex-wrap:wrap; }
+  .top img { height:52px; width:auto; }
+  .top .uni { height:44px; }
+  .hero { background:linear-gradient(135deg,var(--pd),var(--p)); color:#fff; padding:28px 0; }
+  .hero h1 { margin:0 0 6px; font-size:24px; }
+  .hero p { margin:0; opacity:.9; font-size:15px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px; margin:20px 0; }
+  label.field { display:block; font-weight:600; margin-bottom:14px; }
+  input[type=text], input[type=email], textarea, select {
+    width:100%; margin-top:6px; padding:11px 12px; border:1px solid var(--line); border-radius:10px;
+    font:inherit; background:#fff; color:var(--ink);
+  }
+  textarea { min-height:110px; resize:vertical; }
+  .ratings { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:8px; }
+  .ratings input { position:absolute; opacity:0; pointer-events:none; }
+  .ratings label { border:2px solid var(--line); border-radius:12px; padding:16px 8px; text-align:center; cursor:pointer; font-weight:700; background:#fff; transition:.15s; }
+  .ratings label small { display:block; font-weight:400; color:var(--mut); font-size:12px; }
+  .ratings input:checked + label { border-color:var(--p); background:var(--pl); color:var(--p); }
+  .ratings input:focus-visible + label { outline:3px solid #c9b8e8; }
+  .btn { display:inline-block; border:0; border-radius:10px; padding:12px 26px; font:inherit; font-weight:700; cursor:pointer; background:var(--p); color:#fff; }
+  .btn:hover { background:var(--pd); }
+  .hint { color:var(--mut); font-size:13px; margin:6px 0 0; }
+  .ok { display:none; text-align:center; padding:30px 10px; }
+  .ok.show { display:block; }
+  .ok h2 { color:var(--p); margin:0 0 6px; }
+  footer { text-align:center; color:var(--mut); font-size:13px; padding:26px 0 40px; }
+  @media (max-width:520px) { .ratings { grid-template-columns:1fr; } .hero h1 { font-size:21px; } }
+  @media print { .btn, .top .lang { display:none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <img class="uni" src="logo-sru.png" alt="Sulaiman Al-Rajhi University">
+    <img src="logo-admin.png" alt="إدارة الاتصال المؤسسي | Corporate Communication Administration">
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1 data-t="تقييم الخدمة" data-en="Service Feedback">تقييم الخدمة</h1>
+    <p data-t="رأيك يساعدنا على تطوير خدماتنا. يستغرق التعبئة أقل من دقيقة." data-en="Your feedback helps us improve our services. It takes less than a minute.">رأيك يساعدنا على تطوير خدماتنا. يستغرق التعبئة أقل من دقيقة.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <form class="card" id="fbForm" novalidate>
+    <label class="field">
+      <span data-t="الرقم المرجعي للطلب *" data-en="Request reference number *">الرقم المرجعي للطلب *</span>
+      <input type="text" id="ref" name="ref" dir="ltr" placeholder="SRU-YYYYMMDD-HHMMSS-XXX" required>
+      <span class="hint" data-t="يرد في رسالة تأكيد الطلب." data-en="Found in your request confirmation.">يرد في رسالة تأكيد الطلب.</span>
+    </label>
+
+    <div class="field">
+      <span data-t="كيف تقيّم الخدمة المقدَّمة؟ *" data-en="How would you rate the service? *">كيف تقيّم الخدمة المقدَّمة؟ *</span>
+      <div class="ratings" role="radiogroup">
+        <input type="radio" id="r1" name="rating" value="satisfied">
+        <label for="r1"><span data-t="راضٍ" data-en="Satisfied">راضٍ</span><small data-t="الخدمة وفق المتوقع" data-en="Met expectations">الخدمة وفق المتوقع</small></label>
+        <input type="radio" id="r2" name="rating" value="neutral">
+        <label for="r2"><span data-t="محايد" data-en="Neutral">محايد</span><small data-t="مقبولة مع ملاحظات" data-en="Acceptable, with notes">مقبولة مع ملاحظات</small></label>
+        <input type="radio" id="r3" name="rating" value="dissatisfied">
+        <label for="r3"><span data-t="غير راضٍ" data-en="Dissatisfied">غير راضٍ</span><small data-t="لم تلبِّ المتوقع" data-en="Did not meet expectations">لم تلبِّ المتوقع</small></label>
+      </div>
+    </div>
+
+    <label class="field" style="margin-top:18px">
+      <span data-t="ملاحظاتك (اختياري)" data-en="Your comments (optional)">ملاحظاتك (اختياري)</span>
+      <textarea name="comment" maxlength="1000" data-ph-t="ما الذي أعجبك؟ وما الذي نستطيع تحسينه؟" data-ph-en="What worked well? What could we improve?"></textarea>
+    </label>
+
+    <label class="field">
+      <span data-t="بريد للتواصل (اختياري)" data-en="Contact email (optional)">بريد للتواصل (اختياري)</span>
+      <input type="email" name="email" dir="ltr" autocomplete="email" data-ph-t="للرد عليك إن لزم" data-ph-en="Only if we need to follow up">
+    </label>
+
+    <p class="hint" id="err" style="color:#a12a2a;display:none" data-t="يرجى إدخال الرقم المرجعي واختيار التقييم." data-en="Please enter the reference number and select a rating.">يرجى إدخال الرقم المرجعي واختيار التقييم.</p>
+
+    <div style="margin-top:14px"><button class="btn" type="submit" data-t="إرسال التقييم" data-en="Submit feedback">إرسال التقييم</button></div>
+  </form>
+
+  <div class="card ok" id="thanks">
+    <h2 data-t="شكراً لك" data-en="Thank you">شكراً لك</h2>
+    <p data-t="تم استلام تقييمك، ويسعدنا أن نسمع منك دائماً." data-en="Your feedback has been received. We always value hearing from you.">تم استلام تقييمك، ويسعدنا أن نسمع منك دائماً.</p>
+  </div>
+</main>
+
+<footer>
+  <div data-t="إدارة الاتصال المؤسسي · جامعة سليمان الراجحي" data-en="Corporate Communication Administration · Sulaiman Al-Rajhi University">إدارة الاتصال المؤسسي · جامعة سليمان الراجحي</div>
+</footer>
+
+<script src="config.js"></script>
+<script>
+  let lang = "ar";
+  function applyLang() {
+    const isEn = lang === "en";
+    document.documentElement.lang = lang;
+    document.documentElement.dir = isEn ? "ltr" : "rtl";
+    document.title = isEn ? "Service Feedback | Corporate Communication" : "تقييم الخدمة - إدارة الاتصال المؤسسي";
+    document.querySelectorAll("[data-t]").forEach(el => { el.textContent = isEn ? el.dataset.en : el.dataset.t; });
+    document.querySelectorAll("[data-ph-t]").forEach(el => { el.placeholder = isEn ? el.dataset.phEn : el.dataset.phT; });
+    document.body.style.fontFamily = isEn ? "system-ui, sans-serif" : "";
+  }
+  // لغة العرض تُختار من الرابط: feedback.html?lang=en
+  if (new URLSearchParams(location.search).get("lang") === "en") lang = "en";
+  // الرقم المرجعي يُملأ تلقائياً من الرابط: feedback.html?ref=SRU-...
+  const qref = new URLSearchParams(location.search).get("ref");
+  if (qref) document.getElementById("ref").value = qref.trim().toUpperCase();
+  applyLang();
+
+  const REF_RE = /^SRU-\d{8}-\d{6}-\d{3}$/;
+  document.getElementById("fbForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const ref = String(f.get("ref") || "").trim().toUpperCase();
+    const rating = f.get("rating");
+    const err = document.getElementById("err");
+    if (!REF_RE.test(ref) || !rating) { err.style.display = "block"; return; }
+    err.style.display = "none";
+
+    const labels = { satisfied: "راضٍ", neutral: "محايد", dissatisfied: "غير راضٍ" };
+    const payload = { type: "feedback", ref, rating, comment: f.get("comment") || "", email: f.get("email") || "" };
+    if (SRU_CONFIG.formEndpoint) {
+      fetch(SRU_CONFIG.formEndpoint, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+    } else if (SRU_CONFIG.repo) {
+      // بدون رابط Apps Script يُفتح التقييم كبلاغ عام في GitHub بوسم feedback
+      const body = [
+        `**الرقم المرجعي:** ${ref}`,
+        `**التقييم:** ${labels[rating]}`,
+        `**الملاحظات:**\n${payload.comment || "-"}`,
+        `**البريد:** ${payload.email || "-"}`
+      ].join("\n\n");
+      const url = `https://github.com/${SRU_CONFIG.repo}/issues/new?labels=feedback&title=${encodeURIComponent(`[تقييم] [${ref}] ${labels[rating]}`)}&body=${encodeURIComponent(body)}`;
+      window.open(url, "_blank", "noopener");
+    }
+    e.target.hidden = true;
+    document.getElementById("thanks").classList.add("show");
+  });
+</script>
+</body>
+</html>
