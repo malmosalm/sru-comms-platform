@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة الطلبات | Requests Dashboard</title>
+<style>
+:root{--p:#3a1464;--pl:#6a43a8;--ink:#241331;--mut:#675b72;--line:#e5e0ee;--bg:#f7f5fb;--bad:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Tahoma,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--p);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header img{height:44px}
+header .t{font-weight:700}
+header button{background:#fff;color:var(--p);border:0;border-radius:8px;padding:7px 14px;cursor:pointer;font-weight:700;font:inherit}
+main{max-width:1100px;margin:0 auto;padding:20px 16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;max-width:420px;margin:40px auto}
+.card h2{margin:0 0 4px;color:var(--p)}
+.en{color:var(--mut);font-size:13px;margin-bottom:18px;direction:ltr;text-align:left}
+label{display:block;margin:12px 0 6px;font-weight:700;font-size:14px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px;background:#fcfbff}
+.btn{width:100%;margin-top:16px;background:var(--p);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;cursor:pointer}
+.btn:hover{background:var(--pl)}
+.link{display:block;margin-top:12px;text-align:center;color:var(--p);font-weight:700;cursor:pointer;background:none;border:0;width:100%;font:inherit}
+.msg{min-height:20px;margin-top:10px;font-size:14px;text-align:center}
+.err{color:var(--bad)}
+.hidden{display:none !important}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:start}
+th{background:#f3eefb;color:var(--p)}
+tr.row{cursor:pointer}
+tr.row:hover{background:#faf8fd}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.kv small{display:block;color:var(--mut)}
+.note{border-bottom:1px dashed var(--line);padding:8px 0}
+.note small{color:var(--mut)}
+@media (max-width:600px){ th:nth-child(4),td:nth-child(4){display:none} }
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center;gap:12px"><img src="logo-sru-white.png" alt="جامعة سليمان الراجحي"><div><div class="t">لوحة الطلبات</div><div style="font-size:12px;opacity:.85" dir="ltr">Requests Dashboard</div></div></div>
+  <div id="userbar" class="hidden" style="display:flex;gap:10px;align-items:center"><span id="who"></span><button id="logout">خروج | Sign out</button></div>
+</header>
+<main>
+  <!-- تسجيل الدخول -->
+  <section id="vLogin" class="card">
+    <h2>تسجيل الدخول</h2><div class="en">Sign in</div>
+    <form id="fLogin">
+      <label for="lu">اسم المستخدم | Username</label>
+      <input id="lu" dir="ltr" autocomplete="username" required>
+      <label for="lp">كلمة المرور | Password</label>
+      <input id="lp" type="password" dir="ltr" autocomplete="current-password" required>
+      <button class="btn" type="submit">دخول | Sign in</button>
+    </form>
+    <button class="link" id="toForgot">نسيت كلمة المرور؟ | Forgot password?</button>
+    <div class="msg err" id="loginMsg"></div>
+  </section>
+
+  <!-- نسيان كلمة المرور -->
+  <section id="vForgot" class="card hidden">
+    <h2>استعادة كلمة المرور</h2><div class="en">Reset password</div>
+    <form id="fForgot">
+      <label for="fu">اسم المستخدم | Username</label>
+      <input id="fu" dir="ltr" required>
+      <button class="btn" type="submit">إرسال | Send</button>
+    </form>
+    <button class="link" id="backLogin">رجوع | Back</button>
+    <div class="msg" id="forgotMsg"></div>
+  </section>
+
+  <!-- تغيير كلمة المرور -->
+  <section id="vChange" class="card hidden">
+    <h2>تغيير كلمة المرور</h2><div class="en">Change password</div>
+    <form id="fChange">
+      <label for="c1">كلمة المرور الجديدة (8 أحرف على الأقل) | New password</label>
+      <input id="c1" type="password" dir="ltr" minlength="8" required>
+      <label for="c2">تأكيد كلمة المرور | Confirm</label>
+      <input id="c2" type="password" dir="ltr" minlength="8" required>
+      <button class="btn" type="submit">حفظ | Save</button>
+    </form>
+    <div class="msg err" id="changeMsg"></div>
+  </section>
+
+  <!-- الطلبات -->
+  <section id="vList" class="hidden">
+    <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
+      <h2 style="margin:0;color:var(--p)">الطلبات | Requests</h2>
+      <input id="q" placeholder="بحث | Search" style="max-width:260px">
+    </div>
+    <table>
+      <thead><tr><th>الرقم المرجعي</th><th>العنوان</th><th>الخدمة</th><th>تاريخ الحاجة</th><th>الحالة</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="detail" class="panel hidden"></div>
+  </section>
+</main>
+<script src="config.js"></script>
+<script>
+(function(){
+  const API = (window.SRU_CONFIG && SRU_CONFIG.formEndpoint) || "";
+  const STATUS_ALL = ["جديد","مُكلَّف","بانتظار الاعتماد","قيد التنفيذ","مُعاد للتعديل","مغلق"];
+  const STATUS_MEMBER = ["قيد التنفيذ","مُعاد للتعديل"];
+  let session = null, rows = [];
+  const $ = id => document.getElementById(id);
+  const show = id => ["vLogin","vForgot","vChange","vList"].forEach(v => $(v).classList.toggle("hidden", v !== id));
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+  async function api(body){
+    if(!API) return { ok:false, error:"no_endpoint" };
+    const payload = Object.assign({ token: session && session.token }, body);
+    const r = await fetch(API, { method:"POST", headers:{ "Content-Type":"text/plain" }, body: JSON.stringify(payload) });
+    return r.json();
+  }
+  function remember(){ try { sessionStorage.setItem("sruSession", JSON.stringify(session)); } catch(e){} }
+  function forget(){ try { sessionStorage.removeItem("sruSession"); } catch(e){} }
+
+  function enter(){
+    $("userbar").classList.remove("hidden");
+    $("who").textContent = session.name;
+    load();
+  }
+  async function load(){
+    const res = await api({ action: "admin_list" });
+    if(!res.ok){
+      if(res.error === "session"){ logout(); return; }
+      if(res.error === "must_change"){ show("vChange"); return; }
+      $("loginMsg").textContent = "تعذّر تحميل الطلبات | Could not load requests";
+      return;
+    }
+    rows = res.rows; show("vList"); render();
+  }
+  function render(){
+    const q = $("q").value.trim();
+    const list = rows.filter(r => !q || (r.ref + r.title + r.service).includes(q));
+    $("tbody").innerHTML = list.map(r =>
+      `<tr class="row" data-ref="${esc(r.ref)}"><td dir="ltr">${esc(r.ref)}</td><td>${esc(r.title)}</td><td dir="ltr">${esc(r.service)}</td><td dir="ltr">${esc(r.needed)}</td><td>${esc(r.status)}</td></tr>`
+    ).join("") || `<tr><td colspan="5">لا توجد طلبات | No requests</td></tr>`;
+  }
+
+  async function openDetail(ref){
+    const r = rows.find(x => x.ref === ref); if(!r) return;
+    const allowed = session.role === "مدير" ? STATUS_ALL : STATUS_MEMBER;
+    const options = allowed.map(s => `<option ${s === r.status ? "selected" : ""}>${esc(s)}</option>`).join("");
+    const notesRes = await api({ action: "admin_get_notes", ref: r.ref });
+    const notes = (notesRes.notes || []).map(n =>
+      `<div class="note"><small>${esc(n.name)} · ${esc(n.time)}</small><div>${esc(n.text)}</div></div>`
+    ).join("") || "<small>لا توجد ملاحظات | No notes</small>";
+    const time = r.start ? ` · ${esc(r.start)}${r.end ? " - " + esc(r.end) : ""}` : "";
+    $("detail").classList.remove("hidden");
+    $("detail").innerHTML = `
+      <h3 style="margin:0 0 12px;color:var(--p)">${esc(r.title)} <span dir="ltr" style="font-size:13px;color:var(--mut)">${esc(r.ref)}</span></h3>
+      <div class="grid">
+        <div class="kv"><small>مقدم الطلب | Requester</small>${esc(r.requester)} · ${esc(r.dept)}</div>
+        <div class="kv"><small>البريد | Email</small><span dir="ltr">${esc(r.email)}</span></div>
+        <div class="kv"><small>الجوال | Mobile</small><span dir="ltr">${esc(r.phone)}</span></div>
+        <div class="kv"><small>تاريخ الحاجة | Needed</small><span dir="ltr">${esc(r.needed)}${time}</span></div>
+        <div class="kv"><small>الموقع | Location</small>${esc(r.location)}</div>
+        <div class="kv"><small>الأولوية | Priority</small>${esc(r.priority)}</div>
+      </div>
+      <p style="white-space:pre-wrap;margin:14px 0">${esc(r.details)}</p>
+      <label for="st">الحالة | Status</label>
+      <select id="st">${options}</select>
+      <button class="btn" id="saveStatus">حفظ الحالة | Save status</button>
+      <div class="msg" id="dMsg"></div>
+      <h4 style="margin:18px 0 6px;color:var(--p)">الملاحظات | Notes</h4>
+      <div>${notes}</div>
+      <label for="nt">أضف ملاحظة | Add note</label>
+      <textarea id="nt" rows="3"></textarea>
+      <button class="btn" id="addNote">إضافة | Add</button>`;
+
+    $("saveStatus").onclick = async () => {
+      const res = await api({ action: "admin_update_status", ref: r.ref, status: $("st").value });
+      $("dMsg").textContent = res.ok ? "تم الحفظ | Saved" : "تعذّر الحفظ: " + res.error;
+      if(res.ok){ r.status = $("st").value; render(); }
+    };
+    $("addNote").onclick = async () => {
+      const text = $("nt").value.trim(); if(!text) return;
+      const res = await api({ action: "admin_add_note", ref: r.ref, text: text });
+      if(res.ok) openDetail(r.ref); else $("dMsg").textContent = "تعذّر الإضافة: " + res.error;
+    };
+    $("detail").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function logout(){ session = null; forget(); $("userbar").classList.add("hidden"); show("vLogin"); }
+
+  $("fLogin").addEventListener("submit", async e => {
+    e.preventDefault(); $("loginMsg").textContent = "";
+    const res = await api({ action: "admin_login", username: $("lu").value.trim(), password: $("lp").value });
+    if(!res.ok){ $("loginMsg").textContent = "اسم المستخدم أو كلمة المرور غير صحيحة | Invalid username or password"; return; }
+    session = { token: res.token, name: res.name, role: res.role, mustChange: res.mustChange };
+    remember(); $("lp").value = "";
+    if(session.mustChange){ show("vChange"); return; }
+    enter();
+  });
+  $("toForgot").onclick = () => show("vForgot");
+  $("backLogin").onclick = () => show("vLogin");
+  $("fForgot").addEventListener("submit", async e => {
+    e.preventDefault();
+    const res = await api({ action: "admin_request_reset", username: $("fu").value.trim() });
+    $("forgotMsg").textContent = res.message || "";
+  });
+  $("fChange").addEventListener("submit", async e => {
+    e.preventDefault(); $("changeMsg").textContent = "";
+    if($("c1").value !== $("c2").value){ $("changeMsg").textContent = "كلمتا المرور غير متطابقتين | Passwords do not match"; return; }
+    const res = await api({ action: "admin_change_password", newPassword: $("c1").value });
+    if(!res.ok){ $("changeMsg").textContent = "تعذّر التغيير: " + res.error; return; }
+    session.mustChange = false; remember(); $("c1").value = ""; $("c2").value = "";
+    enter();
+  });
+  $("logout").onclick = logout;
+  $("q").addEventListener("input", render);
+  $("tbody").addEventListener("click", e => { const tr = e.target.closest("tr[data-ref]"); if(tr) openDetail(tr.dataset.ref); });
+
+  // استعادة الجلسة بعد تحديث الصفحة (تبقى داخل المتصفح فقط)
+  try {
+    const s = JSON.parse(sessionStorage.getItem("sruSession") || "null");
+    if(s && s.token){ session = s; if(s.mustChange) show("vChange"); else enter(); }
+  } catch(e){}
+})();
+</script>
+</body>
+</html>
